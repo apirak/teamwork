@@ -8,3 +8,5 @@
 
   <%= button_to "Destroy this team", @team, method: :delete %>
 </div>
+
+<%= link_to 'Members', team_members_path(@team) %>
