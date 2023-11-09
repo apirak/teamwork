@@ -1,6 +1,4 @@
-class MembersController < ApplicationController
-  before_action :set_current_team
-
+class MembersController < AuthorizedController
   def index
     @members = @current_team.members
   end
@@ -29,12 +27,8 @@ class MembersController < ApplicationController
       },
     )
 
+    #TODO: Email that user has been added to this team
+
     redirect_to team_members_path(@current_team), notice: "#{email} invited!"
-  end
-
-  private
-
-  def set_current_team
-    @current_team = Team.find(params[:team_id])
   end
 end
