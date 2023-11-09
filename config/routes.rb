@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   resources :teams do
-    resources :members
+    resources :members do
+      collection do
+        post :invite
+      end
+    end
   end
 
   devise_for :users
