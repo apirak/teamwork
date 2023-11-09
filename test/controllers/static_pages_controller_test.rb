@@ -1,13 +1,19 @@
 require "test_helper"
 
 class StaticPagesControllerTest < ActionDispatch::IntegrationTest
+
+  setup do
+    @user = users(:one)
+    sign_in @user
+  end
+
   test "should get landing_page" do
-    get static_pages_landing_page_url
+    get root_url
     assert_response :success
   end
 
   test "should get dashboard" do
-    get static_pages_dashboard_url
+    get dashboard_url
     assert_response :success
   end
 end
