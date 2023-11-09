@@ -1,5 +1,6 @@
 class TeamsController < ApplicationController
   before_action :set_team, only: %i[ show edit update destroy ]
+  before_action :authorize_member, only: %i[ show edit update destroy ]
 
   # GET /teams or /teams.json
   def index
@@ -26,6 +27,7 @@ class TeamsController < ApplicationController
 
     respond_to do |format|
       if @team.save
+        @team.members.create(user: current_user, roles: {admin: true})
         format.html { redirect_to team_url(@team), notice: "Team was successfully created." }
         format.json { render :show, status: :created, location: @team }
       else
@@ -59,6 +61,10 @@ class TeamsController < ApplicationController
   end
 
   private
+    def authorize_member
+      return redirect_to root_path, alert: 'You are not a member' unless @team.users.include? current_user
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_team
       @team = Team.find(params[:id])
